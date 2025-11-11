@@ -1,0 +1,8 @@
+Implement secure user authentication system
+
+- Created MainWindow.xaml with login interface
+- Implemented email/password validation
+- Added UserInfo model class
+- Created users.json storage system
+- Implemented role-based access (Lecturer/Manager)
+- Added default test accounts
