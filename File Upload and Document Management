@@ -1,0 +1,11 @@
+Implement secure file upload and storage system
+
+- Created FileStorageManager.cs for file operations
+- Implemented multi-file upload support
+- Added file type validation (PDF, Word, Excel, PPT, Images)
+- Created organized folder structure (StoredFiles/ClaimID/)
+- Implemented file size checking and validation
+- Added document viewer with open functionality
+- Created file metadata tracking (name, size, type, date)
+
+Addresses Rubric: Document management for claim processing
