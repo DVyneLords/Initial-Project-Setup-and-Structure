@@ -1,0 +1,10 @@
+Implement claim submission with automatic calculations
+
+- Created claim submission form with date pickers
+- Implemented automatic total amount calculation (Hours × Rate)
+- Added real-time calculation on input change
+- Created manager assignment dropdown
+- Implemented draft save functionality
+- Added submit claim workflow
+
+Addresses Rubric: Auto-calculation feature for accurate claims
