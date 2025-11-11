@@ -1,0 +1,7 @@
+chore: Initialize CMCS project with base structure
+
+- Created WPF application project
+- Set up project folders (Models, Views, Managers)
+- Added .gitignore for Visual Studio
+- Created README.md with project description
+- Initialized solution structure
