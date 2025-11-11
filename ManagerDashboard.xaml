@@ -1,0 +1,1045 @@
+﻿<Window x:Class="Plan.ManagerDashboard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Plan"
+        mc:Ignorable="d"
+        Title="CMCS - Academic Manager Dashboard"
+        Height="800" Width="1200"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        Background="#0F172A"
+        Icon="pic.ico">
+
+
+
+<!-- ========== WINDOW RESOURCES ========== -->
+    <Window.Resources>
+
+        <!-- === Modern Gradient Brushes === -->
+        <LinearGradientBrush x:Key="PrimaryGradient" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#667eea" Offset="0"/>
+            <GradientStop Color="#764ba2" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="AccentGradient" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#11998e" Offset="0"/>
+            <GradientStop Color="#38ef7d" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="DangerGradient" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FF6B6B" Offset="0"/>
+            <GradientStop Color="#EE5A52" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="WarningGradient" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FFA726" Offset="0"/>
+            <GradientStop Color="#FF7043" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="InfoGradient" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#42A5F5" Offset="0"/>
+            <GradientStop Color="#1E88E5" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="SuccessGradient" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#66BB6A" Offset="0"/>
+            <GradientStop Color="#43A047" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="DarkGradient" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#1E293B" Offset="0"/>
+            <GradientStop Color="#0F172A" Offset="1"/>
+        </LinearGradientBrush>
+
+        <!-- === Glass Card Style === -->
+        <Style x:Key="GlassCard" TargetType="Border">
+            <Setter Property="Background" Value="#1E293B"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#334155"/>
+            <Setter Property="Margin" Value="8"/>
+            <Setter Property="Padding" Value="24"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black" BlurRadius="20" ShadowDepth="4" Opacity="0.3"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- === Stat Card Style === -->
+        <Style x:Key="StatCard" TargetType="Border" BasedOn="{StaticResource GlassCard}">
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="MinHeight" Value="120"/>
+        </Style>
+
+        <!-- === Modern Button Base === -->
+        <Style x:Key="ModernButtonBase" TargetType="Button">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}" 
+                                CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"
+                                            Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="1.02" ScaleY="1.02"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="border" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="#667eea" BlurRadius="8" ShadowDepth="0" Opacity="0.3"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- === Button Variants === -->
+        <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource ModernButtonBase}">
+            <Setter Property="Background" Value="{StaticResource PrimaryGradient}"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <Style x:Key="SuccessButton" TargetType="Button" BasedOn="{StaticResource ModernButtonBase}">
+            <Setter Property="Background" Value="{StaticResource AccentGradient}"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource ModernButtonBase}">
+            <Setter Property="Background" Value="{StaticResource DangerGradient}"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <Style x:Key="WarningButton" TargetType="Button" BasedOn="{StaticResource ModernButtonBase}">
+            <Setter Property="Background" Value="{StaticResource WarningGradient}"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource ModernButtonBase}">
+            <Setter Property="Background" Value="#475569"/>
+            <Setter Property="Foreground" Value="#E2E8F0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#64748B"/>
+        </Style>
+
+        <!-- === DataGrid Style === -->
+        <Style x:Key="ModernDataGrid" TargetType="DataGrid">
+            <Setter Property="Background" Value="#1E293B"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="GridLinesVisibility" Value="None"/>
+            <Setter Property="AlternatingRowBackground" Value="#334155"/>
+            <Setter Property="RowBackground" Value="#1E293B"/>
+            <Setter Property="Foreground" Value="#E2E8F0"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="RowHeight" Value="45"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="ColumnHeaderStyle">
+                <Setter.Value>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="#475569"/>
+                        <Setter Property="Foreground" Value="#F1F5F9"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="FontSize" Value="13"/>
+                        <Setter Property="Padding" Value="12,8"/>
+                        <Setter Property="BorderBrush" Value="#64748B"/>
+                        <Setter Property="BorderThickness" Value="0,0,1,0"/>
+                        <Setter Property="Height" Value="40"/>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- === Input Styles === -->
+        <Style x:Key="ModernTextBox" TargetType="TextBox">
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#334155"/>
+            <Setter Property="Background" Value="#1E293B"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6">
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                        Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#667eea"/>
+                                <Setter TargetName="border" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="#667eea" BlurRadius="8" ShadowDepth="0" Opacity="0.2"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- === Enhanced ComboBox Style === -->
+        <Style x:Key="ModernComboBox" TargetType="ComboBox">
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#334155"/>
+            <Setter Property="Background" Value="#1E293B"/>
+            <Setter Property="Foreground" Value="#E2E8F0"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="30"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border x:Name="MainBorder" Grid.Column="0" Grid.ColumnSpan="2"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="6"/>
+
+                            <ContentPresenter x:Name="ContentSite" Grid.Column="0"
+                                            IsHitTestVisible="False"
+                                            Content="{TemplateBinding SelectionBoxItem}"
+                                            ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                            ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                            Margin="{TemplateBinding Padding}"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Left"/>
+
+                            <ToggleButton x:Name="ToggleButton" Grid.Column="0" Grid.ColumnSpan="2"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                        ClickMode="Press">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Grid>
+                                            <Border Background="Transparent"/>
+                                            <Path x:Name="Arrow" Grid.Column="1"
+                                                  Fill="#94A3B8"
+                                                  HorizontalAlignment="Right"
+                                                  VerticalAlignment="Center"
+                                                  Data="M 0 0 L 4 4 L 8 0 Z"
+                                                  Margin="0,0,12,0"/>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+
+                            <Popup Name="Popup" Placement="Bottom"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   PopupAnimation="Slide">
+                                <Grid Name="DropDown" SnapsToDevicePixels="True"
+                                      MinWidth="{TemplateBinding ActualWidth}">
+                                    <Border x:Name="DropDownBorder"
+                                            Background="#1E293B"
+                                            BorderThickness="1"
+                                            BorderBrush="#475569"
+                                            CornerRadius="6"
+                                            MaxHeight="200">
+                                        <Border.Effect>
+                                            <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="3" Opacity="0.3"/>
+                                        </Border.Effect>
+                                        <ScrollViewer Margin="4" SnapsToDevicePixels="True">
+                                            <StackPanel IsItemsHost="True"/>
+                                        </ScrollViewer>
+                                    </Border>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="MainBorder" Property="BorderBrush" Value="#64748B"/>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="MainBorder" Property="BorderBrush" Value="#667eea"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- === ComboBox Item Style === -->
+        <Style x:Key="ModernComboBoxItem" TargetType="ComboBoxItem">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="Foreground" Value="#E2E8F0"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border x:Name="Border"
+                                Background="{TemplateBinding Background}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHighlighted" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#475569"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#475569"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#667eea"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- === Activity Text Styles === -->
+        <Style x:Key="ActivityTitleText" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+
+        <Style x:Key="ActivitySubText" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#E5E7EB"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0,4,0,0"/>
+        </Style>
+        <!-- === Professional Activity Card Style === -->
+        <Style x:Key="ActivityCard" TargetType="Border">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#334155" Offset="0"/>
+                        <GradientStop Color="#2D3748" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="16"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+            <Setter Property="BorderBrush" Value="#4A5568"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black" BlurRadius="8" ShadowDepth="2" Opacity="0.25"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <TranslateTransform Y="0"/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="(Border.RenderTransform).(TranslateTransform.Y)"
+                                               To="-2" Duration="0:0:0.2">
+                                    <DoubleAnimation.EasingFunction>
+                                        <CubicEase EasingMode="EaseOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                                <DoubleAnimation Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.BlurRadius)"
+                                               To="12" Duration="0:0:0.2"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="(Border.RenderTransform).(TranslateTransform.Y)"
+                                               To="0" Duration="0:0:0.2">
+                                    <DoubleAnimation.EasingFunction>
+                                        <CubicEase EasingMode="EaseOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                                <DoubleAnimation Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.BlurRadius)"
+                                               To="8" Duration="0:0:0.2"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ActivityCardAlternate" TargetType="Border" BasedOn="{StaticResource ActivityCard}">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#2D3748" Offset="0"/>
+                        <GradientStop Color="#2A2D3A" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderBrush" Value="#3D4852"/>
+        </Style>
+
+        <!-- === Activity Icon Style === -->
+        <Style x:Key="ActivityIcon" TargetType="Border">
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="CornerRadius" Value="20"/>
+            <Setter Property="Margin" Value="0,0,16,0"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black" BlurRadius="4" ShadowDepth="2" Opacity="0.2"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+
+    <!-- ========== MAIN LAYOUT ========== -->
+    <Grid Background="#0F172A">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Header -->
+            <RowDefinition Height="Auto"/>
+            <!-- Stats -->
+            <RowDefinition Height="*"/>
+            <!-- Main content -->
+        </Grid.RowDefinitions>
+
+        <!-- === MODERN HEADER === -->
+        <Border Grid.Row="0" Background="{StaticResource DarkGradient}" Height="70">
+            <Border.Effect>
+                <DropShadowEffect Color="Black" BlurRadius="12" ShadowDepth="2" Opacity="0.4"/>
+            </Border.Effect>
+            <Grid Margin="30,0">
+                <!-- Left: Brand & Title -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Background="{StaticResource PrimaryGradient}" 
+                            Width="40" Height="40" 
+                            CornerRadius="10" 
+                            Margin="0,0,16,0">
+                        <TextBlock Text="M" FontSize="18" FontWeight="Bold" 
+                                   Foreground="White" 
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel>
+                        <TextBlock Text="Manager Dashboard" FontSize="20" FontWeight="SemiBold" Foreground="#E2E8F0"/>
+                        <TextBlock Name="lblWelcomeMessage" Text="Welcome, Academic Manager" 
+                                   FontSize="13" Foreground="#94A3B8" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Right: Action Buttons -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Button Name="btnRefresh" Content="Refresh" Style="{StaticResource SecondaryButton}" Click="BtnRefresh_Click"/>
+                    <Button Name="btnReports" Content="Reports" Style="{StaticResource SecondaryButton}" Click="BtnReports_Click"/>
+                    <Button Name="btnLogout" Content="Logout" Style="{StaticResource DangerButton}" Click="BtnLogout_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- === STATISTICS CARDS === -->
+        <Grid Grid.Row="1" Margin="24,24,24,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Pending Claims -->
+            <Border Grid.Column="0" Style="{StaticResource StatCard}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Background="{StaticResource WarningGradient}" 
+                            Width="48" Height="48" CornerRadius="12" 
+                            HorizontalAlignment="Left">
+                        <TextBlock Text="⏳" FontSize="24" Foreground="White" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+
+                    <StackPanel Grid.Row="1" Margin="0,12,0,0">
+                        <TextBlock Name="lblPendingClaims" Text="8" FontSize="32" FontWeight="Bold" Foreground="#E2E8F0"/>
+                        <TextBlock Text="Pending Approval" FontSize="14" Foreground="#94A3B8" Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Approved Claims -->
+            <Border Grid.Column="1" Style="{StaticResource StatCard}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Background="{StaticResource AccentGradient}" 
+                            Width="48" Height="48" CornerRadius="12" 
+                            HorizontalAlignment="Left">
+                        <TextBlock Text="✓" FontSize="24" Foreground="White" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+
+                    <StackPanel Grid.Row="1" Margin="0,12,0,0">
+                        <TextBlock Name="lblApprovedClaims" Text="24" FontSize="32" FontWeight="Bold" Foreground="#E2E8F0"/>
+                        <TextBlock Text="Approved This Month" FontSize="14" Foreground="#94A3B8" Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Total Amount -->
+            <Border Grid.Column="2" Style="{StaticResource StatCard}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Background="{StaticResource PrimaryGradient}" 
+                            Width="48" Height="48" CornerRadius="12" 
+                            HorizontalAlignment="Left">
+                        <TextBlock Text="💰" FontSize="22" Foreground="White" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+
+                    <StackPanel Grid.Row="1" Margin="0,12,0,0">
+                        <TextBlock Name="lblTotalAmount" Text="R 45,230" FontSize="28" FontWeight="Bold" Foreground="#E2E8F0"/>
+                        <TextBlock Text="Total Pending" FontSize="14" Foreground="#94A3B8" Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Processing Time -->
+            <Border Grid.Column="3" Style="{StaticResource StatCard}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Background="{StaticResource DangerGradient}" 
+                            Width="48" Height="48" CornerRadius="12" 
+                            HorizontalAlignment="Left">
+                        <TextBlock Text="⏱" FontSize="24" Foreground="White" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+
+                    <StackPanel Grid.Row="1" Margin="0,12,0,0">
+                        <TextBlock Name="lblAvgProcessingTime" Text="2.5 days" FontSize="28" FontWeight="Bold" Foreground="#E2E8F0"/>
+                        <TextBlock Text="Avg Processing" FontSize="14" Foreground="#94A3B8" Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- === MAIN CONTENT === -->
+        <Grid Grid.Row="2" Margin="24">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- === CLAIMS TABLE === -->
+            <Border Grid.Column="0" Style="{StaticResource GlassCard}" Margin="0,0,12,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Table Header -->
+                    <Grid Grid.Row="0" Margin="0,0,0,20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Claims Management" FontSize="18" FontWeight="SemiBold" Foreground="#E2E8F0"/>
+                            <TextBlock Name="lblClaimsCount" Text="8 pending claims" 
+                                       FontSize="13" Foreground="#94A3B8" Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Filters -->
+                    <Grid Grid.Row="1" Margin="0,0,0,20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <ComboBox Name="cmbFilterStatus" Grid.Column="0" Style="{StaticResource ModernComboBox}" 
+                                  SelectedIndex="0" SelectionChanged="CmbFilterStatus_SelectionChanged">
+                            <ComboBoxItem Content="All Claims" Style="{StaticResource ModernComboBoxItem}"/>
+                            <ComboBoxItem Content="Pending Final Approval" Style="{StaticResource ModernComboBoxItem}"/>
+                            <ComboBoxItem Content="High Amount (>R5000)" Style="{StaticResource ModernComboBoxItem}"/>
+                            <ComboBoxItem Content="This Week" Style="{StaticResource ModernComboBoxItem}"/>
+                            <ComboBoxItem Content="Approved Claims" Style="{StaticResource ModernComboBoxItem}"/>
+                            <ComboBoxItem Content="Recent Submissions" Style="{StaticResource ModernComboBoxItem}"/>
+                        </ComboBox>
+
+                        <TextBox Name="txtSearch" Grid.Column="1" Style="{StaticResource ModernTextBox}" 
+                                 Margin="12,0,0,0" Text="" />
+
+                        <Button Name="btnSearch" Grid.Column="2" Content="Search" 
+                                Style="{StaticResource PrimaryButton}" 
+                                Margin="8,0,0,0" Click="BtnSearch_Click"/>
+                    </Grid>
+
+                    <!-- DataGrid -->
+                    <DataGrid Grid.Row="2" Name="dgClaims" Style="{StaticResource ModernDataGrid}" 
+                              SelectionChanged="DgClaims_SelectionChanged">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding ClaimId}" Width="80"/>
+                            <DataGridTextColumn Header="Lecturer" Binding="{Binding LecturerName}" Width="150"/>
+                            <DataGridTextColumn Header="Date" Binding="{Binding SubmitDate, StringFormat='{}{0:MMM dd}'}" Width="80"/>
+                            <DataGridTextColumn Header="Hours" Binding="{Binding Hours}" Width="60"/>
+                            <DataGridTextColumn Header="Rate" Binding="{Binding HourlyRate, StringFormat='R {0:N0}'}" Width="70"/>
+                            <DataGridTextColumn Header="Amount" Binding="{Binding TotalAmount, StringFormat='R {0:N0}'}" Width="80"/>
+                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="120"/>
+                            <DataGridTemplateColumn Header="Actions" Width="280">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Content="View" Style="{StaticResource SecondaryButton}" 
+                                                    Tag="{Binding ClaimId}" Click="BtnViewClaim_Click" 
+                                                    Padding="12,6" Margin="2"/>
+                                            <Button Content="Approve" Style="{StaticResource SuccessButton}" 
+                                                    Tag="{Binding ClaimId}" Click="BtnApproveClaim_Click" 
+                                                    Padding="12,6" Margin="2"/>
+                                            <Button Content="Reject" Style="{StaticResource DangerButton}" 
+                                                    Tag="{Binding ClaimId}" Click="BtnRejectClaim_Click" 
+                                                    Padding="12,6" Margin="2"/>
+                                            <Button Content="Delete" Style="{StaticResource DangerButton}" 
+                                                    Tag="{Binding ClaimId}" Click="BtnDeleteClaim_Click" 
+                                                    Padding="12,6" Margin="2"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+
+            <!-- === ENHANCED SIDE PANEL === -->
+            <Border Grid.Column="1" Style="{StaticResource GlassCard}" Margin="12,0,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="Dashboard Panel" FontSize="16" FontWeight="SemiBold" 
+                               Foreground="#E2E8F0" Margin="0,0,0,20"/>
+
+                    <!-- Fixed ScrollViewer with proper content -->
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" 
+                                  HorizontalScrollBarVisibility="Disabled"
+                                  Background="Transparent"
+                                  Padding="0,0,4,0">
+                        <StackPanel>
+
+                            <!-- Quick Actions Section -->
+                            <StackPanel Margin="0,0,0,28">
+                                <Grid Margin="0,0,0,16">
+                                    <Rectangle Height="1" Fill="#475569" VerticalAlignment="Bottom"/>
+                                    <TextBlock Text="QUICK ACTIONS" FontSize="13" FontWeight="SemiBold" 
+                                               Foreground="#94A3B8" Background="#1E293B" Padding="0,0,12,0"
+                                               HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+                                </Grid>
+
+                                <StackPanel>
+                                    <Button Name="btnBulkApprove" Content="✓ Bulk Approve" 
+                                            Style="{StaticResource SuccessButton}" 
+                                            HorizontalAlignment="Stretch" Margin="0,0,0,8" 
+                                            Click="BtnBulkApprove_Click"/>
+                                    <Button Name="btnBulkReject" Content="❌ Bulk Reject" 
+        Style="{StaticResource WarningButton}" 
+        HorizontalAlignment="Stretch" Margin="0,0,0,8" 
+        Click="BtnBulkReject_Click"/>
+                                    <Button Name="btnBulkDelete" Content="🗑️ Bulk Delete" 
+        Style="{StaticResource DangerButton}" 
+        HorizontalAlignment="Stretch" Margin="0,0,0,8" 
+        Click="BtnBulkDelete_Click"/>
+                                    <Button Name="btnExportClaims" Content="📊 Export Claims" 
+                                            Style="{StaticResource PrimaryButton}" 
+                                            HorizontalAlignment="Stretch" Margin="0,0,0,8" 
+                                            Click="BtnExportClaims_Click"/>
+                                    <Button Name="btnViewAllLecturers" Content="👥 View Lecturers" 
+                                            Style="{StaticResource SecondaryButton}" 
+                                            HorizontalAlignment="Stretch" Margin="0,0,0,8" 
+                                            Click="BtnViewAllLecturers_Click"/>
+                                    <Button Name="btnSystemSettings" Content="⚙️ Settings" 
+                                            Style="{StaticResource SecondaryButton}" 
+                                            HorizontalAlignment="Stretch"
+                                            Click="BtnSystemSettings_Click"/>
+                                    
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- Recent Activity Section -->
+                            <StackPanel>
+                                <Grid Margin="0,0,0,16">
+                                    <Rectangle Height="1" Fill="#475569" VerticalAlignment="Bottom"/>
+                                    <TextBlock Text="RECENT ACTIVITY" FontSize="13" FontWeight="SemiBold" 
+                                               Foreground="#94A3B8" Background="#1E293B" Padding="0,0,12,0"
+                                               HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+                                </Grid>
+
+                                <StackPanel Name="spRecentActivity">
+
+                                    <!-- Activity Item 1: System Success -->
+                                    <Border Style="{StaticResource ActivityCard}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Border Grid.Column="0" Background="{StaticResource SuccessGradient}" 
+                                                    Style="{StaticResource ActivityIcon}">
+                                                <Path Fill="White" 
+                                                      Data="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"
+                                                      Width="18" Height="18"
+                                                      Stretch="Uniform"
+                                                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                <TextBlock Text="System Initialization Complete" Style="{StaticResource ActivityTitleText}"/>
+                                                <TextBlock Text="All services are operational and ready" Style="{StaticResource ActivitySubText}"/>
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Right">
+                                                <TextBlock Text="2m" FontSize="11" FontWeight="Medium" 
+                                                           Foreground="#64748B" HorizontalAlignment="Right"/>
+                                                <Ellipse Width="6" Height="6" Fill="#10B981" Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- Activity Item 2: New Claim -->
+                                    <Border Style="{StaticResource ActivityCardAlternate}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Border Grid.Column="0" Background="{StaticResource InfoGradient}" 
+                                                    Style="{StaticResource ActivityIcon}">
+                                                <Path Fill="White" 
+                                                      Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"
+                                                      Width="18" Height="18"
+                                                      Stretch="Uniform"
+                                                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                <TextBlock Text="New Claim Submitted" 
+                                                           FontSize="13" FontWeight="SemiBold" Foreground="#F8FAFC" 
+                                                           TextWrapping="Wrap"/>
+                                                <TextBlock Text="Dr. Smith • Claim #2024-001 • R2,400" 
+                                                           FontSize="12" Foreground="#94A3B8" 
+                                                           Margin="0,4,0,0"/>
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Right">
+                                                <TextBlock Text="15m" FontSize="11" FontWeight="Medium" 
+                                                           Foreground="#64748B" HorizontalAlignment="Right"/>
+                                                <Ellipse Width="6" Height="6" Fill="#3B82F6" Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- Activity Item 3: Approval -->
+                                    <Border Style="{StaticResource ActivityCard}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Border Grid.Column="0" Background="{StaticResource AccentGradient}" 
+                                                    Style="{StaticResource ActivityIcon}">
+                                                <Path Fill="White" 
+                                                      Data="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M11,16.5L18,9.5L16.59,8.09L11,13.67L7.91,10.59L6.5,12L11,16.5Z"
+                                                      Width="18" Height="18"
+                                                      Stretch="Uniform"
+                                                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                <TextBlock Text="Claim Approved Successfully" 
+                                                           FontSize="13" FontWeight="SemiBold" Foreground="#F8FAFC" 
+                                                           TextWrapping="Wrap"/>
+                                                <TextBlock Text="Prof. Johnson • R3,200 • Processed" 
+                                                           FontSize="12" Foreground="#94A3B8" 
+                                                           Margin="0,4,0,0"/>
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Right">
+                                                <TextBlock Text="32m" FontSize="11" FontWeight="Medium" 
+                                                           Foreground="#64748B" HorizontalAlignment="Right"/>
+                                                <Ellipse Width="6" Height="6" Fill="#10B981" Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- Activity Item 4: Export Complete -->
+                                    <Border Style="{StaticResource ActivityCardAlternate}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Border Grid.Column="0" Background="{StaticResource WarningGradient}" 
+                                                    Style="{StaticResource ActivityIcon}">
+                                                <Path Fill="White" 
+                                                      Data="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"
+                                                      Width="18" Height="18"
+                                                      Stretch="Uniform"
+                                                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                <TextBlock Text="Export Process Completed" 
+                                                           FontSize="13" FontWeight="SemiBold" Foreground="#F8FAFC" 
+                                                           TextWrapping="Wrap"/>
+                                                <TextBlock Text="45 claims exported to CSV successfully" 
+                                                           FontSize="12" Foreground="#94A3B8" 
+                                                           Margin="0,4,0,0"/>
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Right">
+                                                <TextBlock Text="1h" FontSize="11" FontWeight="Medium" 
+                                                           Foreground="#64748B" HorizontalAlignment="Right"/>
+                                                <Ellipse Width="6" Height="6" Fill="#F59E0B" Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- Activity Item 5: New User -->
+                                    <Border Style="{StaticResource ActivityCard}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Border Grid.Column="0" Background="{StaticResource PrimaryGradient}" 
+                                                    Style="{StaticResource ActivityIcon}">
+                                                <Path Fill="White" 
+                                                      Data="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"
+                                                      Width="18" Height="18"
+                                                      Stretch="Uniform"
+                                                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                <TextBlock Text="New Lecturer Registration" 
+                                                           FontSize="13" FontWeight="SemiBold" Foreground="#F8FAFC" 
+                                                           TextWrapping="Wrap"/>
+                                                <TextBlock Text="Dr. Williams successfully joined the platform" 
+                                                           FontSize="12" Foreground="#94A3B8" 
+                                                           Margin="0,4,0,0"/>
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Right">
+                                                <TextBlock Text="2h" FontSize="11" FontWeight="Medium" 
+                                                           Foreground="#64748B" HorizontalAlignment="Right"/>
+                                                <Ellipse Width="6" Height="6" Fill="#8B5CF6" Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- Activity Item 6: Maintenance -->
+                                    <Border Style="{StaticResource ActivityCardAlternate}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Border Grid.Column="0" Background="{StaticResource AccentGradient}" 
+                                                    Style="{StaticResource ActivityIcon}">
+                                                <Path Fill="White" 
+                                                      Data="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"
+                                                      Width="18" Height="18"
+                                                      Stretch="Uniform"
+                                                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                <TextBlock Text="System Maintenance Complete" 
+                                                           FontSize="13" FontWeight="SemiBold" Foreground="#F8FAFC" 
+                                                           TextWrapping="Wrap"/>
+                                                <TextBlock Text="All systems optimized and operational" 
+                                                           FontSize="12" Foreground="#94A3B8" 
+                                                           Margin="0,4,0,0"/>
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Right">
+                                                <TextBlock Text="3h" FontSize="11" FontWeight="Medium" 
+                                                           Foreground="#64748B" HorizontalAlignment="Right"/>
+                                                <Ellipse Width="6" Height="6" Fill="#10B981" Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- Activity Item 7: High Value Alert -->
+                                    <Border Style="{StaticResource ActivityCard}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Border Grid.Column="0" Background="{StaticResource DangerGradient}" 
+                                                    Style="{StaticResource ActivityIcon}">
+                                                <Path Fill="White" 
+                                                      Data="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"
+                                                      Width="18" Height="18"
+                                                      Stretch="Uniform"
+                                                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                <TextBlock Text="High-Value Claim Alert" 
+                                                           FontSize="13" FontWeight="SemiBold" Foreground="#F8FAFC" 
+                                                           TextWrapping="Wrap"/>
+                                                <TextBlock Text="R8,500 claim flagged for manual review" 
+                                                           FontSize="12" Foreground="#94A3B8" 
+                                                           Margin="0,4,0,0"/>
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Right">
+                                                <TextBlock Text="4h" FontSize="11" FontWeight="Medium" 
+                                                           Foreground="#64748B" HorizontalAlignment="Right"/>
+                                                <Ellipse Width="6" Height="6" Fill="#EF4444" Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- Activity Item 8: Report Generated -->
+                                    <Border Style="{StaticResource ActivityCardAlternate}" Margin="0,0,0,0">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Border Grid.Column="0" Background="{StaticResource InfoGradient}" 
+                                                    Style="{StaticResource ActivityIcon}">
+                                                <Path Fill="White" 
+                                                      Data="M14,17H7V15H14M17,13H7V11H17M17,9H7V7H17M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3Z"
+                                                      Width="18" Height="18"
+                                                      Stretch="Uniform"
+                                                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                <TextBlock Text="Weekly Report Generated" 
+                                                           FontSize="13" FontWeight="SemiBold" Foreground="#F8FAFC" 
+                                                           TextWrapping="Wrap"/>
+                                                <TextBlock Text="Comprehensive analytics sent to administrators" 
+                                                           FontSize="12" Foreground="#94A3B8" 
+                                                           Margin="0,4,0,0"/>
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Right">
+                                                <TextBlock Text="5h" FontSize="11" FontWeight="Medium" 
+                                                           Foreground="#64748B" HorizontalAlignment="Right"/>
+                                                <Ellipse Width="6" Height="6" Fill="#3B82F6" Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+
+                                </StackPanel>
+                            </StackPanel>
+
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- === STATUS BAR === -->
+        <Border Grid.Row="2" Background="#1E293B" Height="35" VerticalAlignment="Bottom" 
+                BorderBrush="#334155" BorderThickness="0,1,0,0">
+            <Grid Margin="30,0">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Ellipse Width="8" Height="8" Fill="#48BB78" Margin="0,0,8,0"/>
+                    <TextBlock Name="lblStatusMessage" Text="Ready" Foreground="#E2E8F0" FontSize="12"/>
+                    <TextBlock Text=" • " Foreground="#64748B" FontSize="12" Margin="8,0"/>
+                    <TextBlock Name="lblLastRefresh" Text="Last updated: Just now" 
+                               Foreground="#64748B" FontSize="12"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+    </Grid>
+</Window>
